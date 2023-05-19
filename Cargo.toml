@@ -6,8 +6,10 @@ edition = "2021"
 rust-version = "1.59"
 description = "A Rust-safe library for interracting with Model Specific Registers in user-space."
 repository = "https://github.com/virtee/msru"
+homepage = "https://github.com/virtee/msru"
 license = "Apache-2.0"
 keywords = ["msr", "registers", "cpu", "amd", "x86", "x86_64", "x64", "intel", "linux"]
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
