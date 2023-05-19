@@ -1,0 +1,14 @@
+[package]
+name = "msru"
+version = "0.1.0"
+authors = [ "Larry Dewey <larry.dewey@amd.com>"]
+edition = "2021"
+rust-version = "1.59"
+description = "A Rust-safe library for interracting with Model Specific Registers in user-space."
+repository = "https://github.com/virtee/msru"
+license = "Apache-2.0"
+keywords = ["msr", "registers", "cpu", "amd", "x86", "x86_64", "x64", "intel", "linux"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
