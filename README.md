@@ -10,7 +10,7 @@ Add the following line to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-msru = "0.1.0"
+msru = "0.2.0"
 ```
 
 ## Usage
@@ -19,7 +19,9 @@ msru = "0.1.0"
 use msru::Msr;
 
 // X86_64 SYSCFG MSR
-let msr: Msr = Msr::new(0xC0010010, 0);
+let msr: Msr = Msr::new(0xC0010010, 0)?;
+
+let raw_value: u64 = msr.read()?;
 
 // ...
 ```
