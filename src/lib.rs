@@ -7,10 +7,39 @@
 //! Currently this crate only supports Linux.
 
 use std::{
+    convert::From,
     fs::{File, OpenOptions},
-    io::{Read, Result, Seek, SeekFrom},
+    io::{Read, Seek, SeekFrom},
     os::unix::fs::FileExt,
+    path::Path,
 };
+
+#[derive(Debug)]
+pub enum MsrError {
+    IoError(std::io::Error),
+    MissingKernelModule,
+    UnknownError,
+}
+
+impl std::error::Error for MsrError {}
+
+impl std::fmt::Display for MsrError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            MsrError::IoError(io_error) => write!(f, "IoError Encountered: {io_error}"),
+            MsrError::MissingKernelModule => write!(f, "MSR Kernel Module not loaded!"),
+            MsrError::UnknownError => write!(f, "An unknown error was encountered!"),
+        }
+    }
+}
+
+impl From<std::io::Error> for MsrError {
+    fn from(value: std::io::Error) -> Self {
+        Self::IoError(value)
+    }
+}
+
+type Result<T> = std::result::Result<T, MsrError>;
 
 /// A Rust-friendly MSR structure.
 pub struct Msr {
@@ -24,6 +53,9 @@ impl Msr {
     /// Construct an Msr for a specified register and CPU.
     pub fn new(reg: u32, cpu: u16) -> Result<Self> {
         let cpu_msr_path: String = format!("/dev/cpu/{cpu}/msr");
+        if !Path::new(&cpu_msr_path).exists() {
+            return Err(MsrError::MissingKernelModule);
+        }
         Ok(Self {
             reg,
             fh: OpenOptions::new()
